@@ -5,6 +5,7 @@ import io
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
+import uvicorn
 
 # Load environment variables
 load_dotenv()
@@ -44,3 +45,6 @@ async def analyze_image(question: str = Form(...), file: UploadFile = File(...))
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
+# Define the main function to run the FastAPI app
+if __name__ == "__main__":
+    uvicorn.run(app, host="localhost", port=8000)
