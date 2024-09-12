@@ -28,19 +28,19 @@ def get_data(question: str, image: Image.Image):
     return "No response"
 
 
-# API endpoint to accept image and question
+# API endpoint to accept image and question and Language choice
 @app.post("/analyze-image/")
-async def analyze_image(question: str = Form(...), file: UploadFile = File(...)):
+async def analyze_image(question: str = Form(...), file: UploadFile = File(...),language_choice: str = Form(...):
     try:
         # Read the image file
         image_data = await file.read()
         image = Image.open(io.BytesIO(image_data))
 
         # Get AI response
-        response = get_data("which disease do you detect in the provided leaf or crop and provide solution to prevent it", image)
+        response = get_data("which disease do you detect in the provided leaf or crop and provide solution to prevent it Please respond in {language_choice}.", image)
 
         # Return the AI response as JSON
-        return JSONResponse(content={"question": question, "response": response})
+        return JSONResponse(content={"response": response})
 
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
