@@ -47,4 +47,6 @@ async def analyze_image(question: str = Form(...), file: UploadFile = File(...))
 
 # Define the main function to run the FastAPI app
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    import os
+    port = int(os.getenv("PORT", 8000))  # Render assigns a port via PORT environment variable
+    uvicorn.run(app, host="0.0.0.0", port=port)
