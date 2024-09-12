@@ -37,6 +37,8 @@ def get_data(question: str, image: Image.Image):
             # if required (this depends on the generative model's API specs).
             response = model.generate_content([question, image])
             return response.text
+        except Exception as e:
+            return f"Error in get_data: {str(e)}"
     return "No response"
 
 
