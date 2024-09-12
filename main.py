@@ -28,22 +28,26 @@ def get_data(question: str, image: Image.Image):
     return "No response"
 
 
-# API endpoint to accept image and question and Language choice
+# API endpoint to accept image, question, and language choice
 @app.post("/analyze-image/")
-async def analyze_image(question: str = Form(...), file: UploadFile = File(...),language_choice: str = Form(...)):
+async def analyze_image(question: str = Form(...), file: UploadFile = File(...), language_choice: str = Form(...)):
     try:
         # Read the image file
         image_data = await file.read()
         image = Image.open(io.BytesIO(image_data))
 
+        # Format the question with the language choice using f-string
+        formatted_question = f"Which disease do you detect in the provided leaf or crop and provide a solution to prevent it? Please respond in {language_choice}."
+
         # Get AI response
-        response = get_data("which disease do you detect in the provided leaf or crop and provide solution to prevent it Please respond in {language_choice}.", image)
+        response = get_data(formatted_question, image)
 
         # Return the AI response as JSON
         return JSONResponse(content={"response": response})
 
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
 
 # Define the main function to run the FastAPI app
 if __name__ == "__main__":
