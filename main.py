@@ -19,8 +19,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:52436/","http://localhost:55425/"],  # Adjust this to specify which domains are allowed
     allow_credentials=True,
-    allow_methods=["*"],  # Adjust this to specify allowed methods
-    allow_headers=["*"],  # Adjust this to specify allowed headers
+    allow_methods=["GET","POST"],  # Adjust this to specify allowed methods
+    allow_headers=["Content-Type","Authorization"],  # Adjust this to specify allowed headers
 )
 # Initialize the model
 model = genai.GenerativeModel("gemini-1.5-flash")
@@ -29,10 +29,14 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 # Function to get response from model
 def get_data(question: str, image: Image.Image):
     if question and image is not None:
-        # You may need to convert the image into a format that the model can accept,
-        # if required (this depends on the generative model's API specs).
-        response = model.generate_content([question, image])
-        return response.text
+        try:
+            buffered=io.BytesIO()
+            image.save(buffered,format="PNG")
+            image_bytes=buffered.getvalue()
+            # You may need to convert the image into a format that the model can accept,
+            # if required (this depends on the generative model's API specs).
+            response = model.generate_content([question, image])
+            return response.text
     return "No response"
 
 
