@@ -30,7 +30,7 @@ def get_data(question: str, image: Image.Image):
 
 # API endpoint to accept image and question and Language choice
 @app.post("/analyze-image/")
-async def analyze_image(question: str = Form(...), file: UploadFile = File(...),language_choice: str = Form(...):
+async def analyze_image(question: str = Form(...), file: UploadFile = File(...),language_choice: str = Form(...)):
     try:
         # Read the image file
         image_data = await file.read()
