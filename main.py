@@ -150,7 +150,7 @@ async def analyze_image(question: str = Form(...), language_choice: str = Form(.
 
 
 # Define the main function to run the FastAPI app
-if _name_ == "_main_":
+if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))  # Render assigns a port via PORT environment variable
     uvicorn.run(app, host="0.0.0.0", port=port)
 
